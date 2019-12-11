@@ -1,6 +1,6 @@
 # snakegame
 
-The code builds upon the code created by Julian Evans from this repository: https://github.com/jvns/snake 
+The code builds upon the code created by Julia Evans from this repository: https://github.com/jvns/snake 
 I have used the same license as her, MIT license. 
 
 Features added include:
