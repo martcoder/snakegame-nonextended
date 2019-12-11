@@ -1,9 +1,9 @@
 # snakegame
 
 The code builds upon the code created by Julia Evans from this repository: https://github.com/jvns/snake 
-I have used the same license as her, MIT license. 
+I have used the same license as her, MIT license. It was also modified by Mario Mata (GCU) who added comments and adjusted existing code. 
 
-Features added include:
+Features added by myself include:
 
 - Showing the score at middle top of screen
 
