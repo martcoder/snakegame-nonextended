@@ -10,9 +10,7 @@ void display_points(Board* board,PointList* snake, const chtype symbol, int colo
 	
 		  PointList* snakeLocal = snake;
 
-   		  
-		
-                  snakeLocal = snake; // reset pointer
+          snakeLocal = snake; // reset pointer
 		  if(snake->anacondaCountdown > 0){
 			  
 			  snakeLocal = snake; // reset pointer
@@ -32,10 +30,9 @@ void display_points(Board* board,PointList* snake, const chtype symbol, int colo
 				snakeLocal = snakeLocal->next;
 			  }
 			  snake->anacondaCountdown = snake->anacondaCountdown - 1;
-		  }
-                  
+		  }      
 		  
-          	  attron(COLOR_PAIR(colorPair));
+          attron(COLOR_PAIR(colorPair));
 		  snakeLocal = snake; // reset pointer
 		  while(snakeLocal) { //while list not NULL
 			//print symbol in point position
@@ -44,8 +41,6 @@ void display_points(Board* board,PointList* snake, const chtype symbol, int colo
 			snakeLocal = snakeLocal->next;
 		  }
 
-          	  
-		  
 		  if(snake->hasFireblock == 1){ // head of the snake which has eaten a fireblock and not fired it yet
                   short int color = 191;
 		    //init_pair(20, COLOR_CYAN, color); // for if advanced colors are available
@@ -54,7 +49,7 @@ void display_points(Board* board,PointList* snake, const chtype symbol, int colo
 		    mvaddch(snake->y, snake->x,	symbol);
 		  }
 
-                  attron(COLOR_PAIR(colorPair));
+          attron(COLOR_PAIR(colorPair));
 		  
 		  if(snake->independentOfSnake == 1){ // is a fireblock which is travelling
 			  

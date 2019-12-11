@@ -26,7 +26,6 @@ void draw(Board* board){
     if(board->snake)
       showScores(board->snake,board->xmax,board->ymax);
     
-
     if(board->snakeB) 
         showScores(board->snakeB,board->xmax,board->ymax); 
 
@@ -40,9 +39,7 @@ void draw(Board* board){
       display_points(board,board->snakeB, ACS_BLOCK,2); 
     }
     
-
     // draw the maze blocks
-    
     attron(COLOR_PAIR(34));
     show_maze(board->maze);
     
@@ -52,12 +49,12 @@ void draw(Board* board){
     
     // draw pvp bonus   
     attron(COLOR_PAIR(2));
-    display_points(board,board->pvpbonus, ACS_STERLING,2);
+    display_points(board,board->pvpbonus, 'S',2);
     
     // draw fireblock bonus
     attron(COLOR_PAIR(9));
     //display_points(board,board->fireBonuses, 230);
-    display_points(board,board->fireBonuses, ACS_PLMINUS,9);
+    display_points(board,board->fireBonuses, 'o',9);
     
     // draw anaconda bonus
     attron(COLOR_PAIR(38));
@@ -79,15 +76,11 @@ void draw(Board* board){
       }
     }
     
-
-    
-
-    
     refresh(); //paint screen
 }
 
 void moveFireblocks(Board* board){
- 
+
   	if(board->snake->fireBlocks){
 	  if(board->snake->fireBlocks->beingFired == 1)
         move_fireblocks(board,board->snake);
@@ -99,7 +92,6 @@ void moveFireblocks(Board* board){
           move_fireblocks(board,board->snakeB);
       }
     }
-
 }
 
 int main() {
@@ -152,12 +144,10 @@ int main() {
     // to show updated fireblocks
     //draw(board);wdsdwwdawdaw
     
-    
     //showScores(board);
     
     //refresh(); //paint screen
 
-    
     int pvpactivator = 1;
     int * pvp = &pvpactivator;
     
@@ -166,8 +156,6 @@ int main() {
     
     int pBscore = 0;
     int * pBscorePtr = &pBscore;
-    
-    
     
     get_next_move(*dir_playerAptr, *dir_playerBptr, dir_playerAptr, dir_playerBptr,board->snake,board->snakeB ? board->snakeB : NULL); //get next move direction
 	//update snake direction
@@ -197,8 +185,6 @@ int main() {
         *pvp = 1; // deactivate again
 	}
 	
-	
-	
 	// If anaconda in play is about to expire, add new anaconda bonus to board
 	if(board->snakeB){
 	  if(board->snakeB->anacondaCountdown == ANACONDA_TIME)
@@ -212,8 +198,7 @@ int main() {
 	if(board->snake->anacondaCountdown > 0 && board->snake->anacondaCountdown < 3 ){
 	  	add_new_anacondabonus(board);
 	}
-    
-  }
+  } // end MAIN LOOP
   //release ncurses resources
   endwin();
 

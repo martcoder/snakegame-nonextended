@@ -75,6 +75,7 @@ Board* create_board(PointList* foods, PointList* snake, PointList* snakeA, Point
 bool list_contains(PointList* cell, PointList* list);
 bool list_contains_anaconda(PointList* beginning, PointList* list, PointList* snakePtr);
 bool list_contains_fireblock(PointList* beginning, PointList* list);
+bool list_contains_snake_then_break(PointList* fires, PointList* snakePtr);
 //remove element elt from list, update list pointer
 bool remove_from_list(PointList* elt, PointList** list);
 // change item x and y to different values

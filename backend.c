@@ -270,6 +270,14 @@ void move_fireblocks(Board* board, PointList* snakePtr){
             //add_new_food(board);
             
 		}
+
+
+                // if fireblock hits a snake, cut the snake at that point and halve the snake's score
+		/*list_contains_snake_then_break(fires, board->snake);
+		if(board->snakeB)
+     		  list_contains_snake_then_break(fires, board->snakeB);
+        */
+
 		// Extinguish fireblock if edge of terminal is reached
 		if( (fires->x > board->xmax) || (fires->x < 0) || (fires->y > board->ymax) || (fires->y < 0) ){
 		    fires->beingFired = 0; //deactivate
@@ -414,6 +422,37 @@ bool list_contains_anaconda(PointList* beginning, PointList* list, PointList* sn
 		}
 	}
 	return false;
+}
+
+bool list_contains_snake_then_break(PointList* fires, PointList* snakePtr){
+	
+
+  PointList* snakeLocal = snakePtr;
+  snakeLocal = snakeLocal->next; // move past head
+  int hit = 0;
+  while(snakeLocal){
+	if(snakeLocal->x == fires->x && snakeLocal->y == fires->y){
+	  snakePtr->score = snakePtr->score / 2; // Halve the snake's score	
+	  hit = 1;
+	}
+	snakeLocal = snakeLocal->next; 
+  }
+  
+  // reset pointer
+  snakeLocal = snakePtr;
+  
+  // now past the second segment
+  snakeLocal = snakeLocal->next;
+  snakeLocal = snakeLocal->next;
+  
+  while(snakeLocal){
+		  
+		  PointList* next = snakeLocal->next;
+		  free(snakeLocal);
+		  snakeLocal = next;
+		  
+  }
+	
 }
 
 
