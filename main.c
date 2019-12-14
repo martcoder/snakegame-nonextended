@@ -189,13 +189,13 @@ int main() {
 	if(board->snakeB){
 	  if(board->snakeB->anacondaCountdown == ANACONDA_TIME)
 	    splashAnaconda(board->xmax,board->ymax);
-	  if(	board->snakeB->anacondaCountdown > 0 &&  board->snakeB->anacondaCountdown < 3 ){
+	  if(	board->snakeB->anacondaCountdown > 1 &&  board->snakeB->anacondaCountdown < 3 ){
 	    add_new_anacondabonus(board);
 	  }
 	}
 	if(board->snake->anacondaCountdown == ANACONDA_TIME)
 	  splashAnaconda(board->xmax,board->ymax);
-	if(board->snake->anacondaCountdown > 0 && board->snake->anacondaCountdown < 3 ){
+	if(board->snake->anacondaCountdown > 1 && board->snake->anacondaCountdown < 3 ){
 	  	add_new_anacondabonus(board);
 	}
   } // end MAIN LOOP
