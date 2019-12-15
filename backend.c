@@ -262,7 +262,7 @@ void move_fireblocks(Board* board, PointList* snakePtr){
 		
 		// if fireblock will hit a food, increment snake score!!! remove that food, and add another new food
 		if (list_contains_fireblock(fires,board->foods)) {
-			snakePtr->score = snakePtr->score + 1; // I suspect I might have a race condition for this variable
+			snakePtr->score = snakePtr->score + 1; 
 			snakePtr->justScored = 4;
 			//remove_from_list(fires, &(board->foods));
 			update_item_coords_in_list_if_in_fireblock(fires,board->foods,board);
@@ -285,6 +285,110 @@ void move_fireblocks(Board* board, PointList* snakePtr){
             fires->extinguishGraphics = 1;
 		}
 	}	
+}
+
+void initialiseFireworkCoords(PointList* snakePtr){
+	    snakePtr->fireworkA->x = snakePtr->x;
+	    snakePtr->fireworkA->y = snakePtr->y;	
+	    snakePtr->fireworkB->x = snakePtr->x;
+	    snakePtr->fireworkB->y = snakePtr->y;
+	    snakePtr->fireworkC->x = snakePtr->x;
+	    snakePtr->fireworkC->y = snakePtr->y;
+	    snakePtr->fireworkD->x = snakePtr->x;
+	    snakePtr->fireworkD->y = snakePtr->y;
+	    snakePtr->fireworkE->x = snakePtr->x;
+	    snakePtr->fireworkE->y = snakePtr->y;
+	    snakePtr->fireworkF->x = snakePtr->x;
+	    snakePtr->fireworkF->y = snakePtr->y;
+	    snakePtr->fireworkG->x = snakePtr->x;
+	    snakePtr->fireworkG->y = snakePtr->y;
+	    snakePtr->fireworkH->x = snakePtr->x;
+	    snakePtr->fireworkH->y = snakePtr->y;
+	    snakePtr->fireworkI->x = snakePtr->x;
+	    snakePtr->fireworkI->y = snakePtr->y;
+}
+
+void move_fireworks(Board* board, PointList* snakePtr){
+	
+	  
+	  //Left
+	  snakePtr->fireworkA->x = snakePtr->fireworkA->x - 1;
+	  
+	  if(list_contains(snakePtr->fireworkA,board->foods)){
+		  snakePtr->score = snakePtr->score + 1; 
+		  snakePtr->justScored = 4;
+		  // update coords of foods which got consumed
+		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkA,board->foods,board);
+	  }
+	  
+	  //Right
+	  snakePtr->fireworkB->x = snakePtr->fireworkB->x + 1;
+	  if(list_contains(snakePtr->fireworkB,board->foods)){
+		  snakePtr->score = snakePtr->score + 1; 
+		  snakePtr->justScored = 4;
+		  // update coords of foods which got consumed
+		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkB,board->foods,board);
+	  }
+	  
+	  // Up
+	  snakePtr->fireworkC->y = snakePtr->fireworkC->y + 1;
+	  if(list_contains(snakePtr->fireworkC,board->foods)){
+		  snakePtr->score = snakePtr->score + 1; 
+		  snakePtr->justScored = 4;
+		  // update coords of foods which got consumed
+		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkC,board->foods,board);
+	  }
+	  
+	  //Down
+	  snakePtr->fireworkD->y = snakePtr->fireworkD->y - 1;
+	  if(list_contains(snakePtr->fireworkD,board->foods)){
+		  snakePtr->score = snakePtr->score + 1; 
+		  snakePtr->justScored = 4;
+		  // update coords of foods which got consumed
+		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkD,board->foods,board);
+	  }
+	  
+	  // Up and Left
+	  snakePtr->fireworkE->x = snakePtr->fireworkE->x - 1;
+	  snakePtr->fireworkE->y = snakePtr->fireworkE->y - 1;
+	  if(list_contains(snakePtr->fireworkE,board->foods)){
+		  snakePtr->score = snakePtr->score + 1; 
+		  snakePtr->justScored = 4;
+		  // update coords of foods which got consumed
+		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkE,board->foods,board);
+	  }
+	  
+	  // UP and Right
+	  snakePtr->fireworkF->x = snakePtr->fireworkF->x + 1;
+	  snakePtr->fireworkF->y = snakePtr->fireworkF->y - 1;
+	  if(list_contains(snakePtr->fireworkF,board->foods)){
+		  snakePtr->score = snakePtr->score + 1; 
+		  snakePtr->justScored = 4;
+		  // update coords of foods which got consumed
+		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkF,board->foods,board);
+	  }
+	  
+	  // Down and Left
+	  snakePtr->fireworkG->x = snakePtr->fireworkG->x - 1;
+	  snakePtr->fireworkG->y = snakePtr->fireworkG->y + 1;
+	  if(list_contains(snakePtr->fireworkG,board->foods)){
+		  snakePtr->score = snakePtr->score + 1; 
+		  snakePtr->justScored = 4;
+		  // update coords of foods which got consumed
+		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkG,board->foods,board);
+	  }
+	  
+	  // Down and Right
+	  snakePtr->fireworkH->x = snakePtr->fireworkH->x + 1;
+	  snakePtr->fireworkH->y = snakePtr->fireworkH->y + 1;
+	  if(list_contains(snakePtr->fireworkH,board->foods)){
+		  snakePtr->score = snakePtr->score + 1; 
+		  snakePtr->justScored = 4;
+		  // update coords of foods which got consumed
+		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkH,board->foods,board);
+	  }
+	  
+	
 }
 
 //This function tries to move the full snake in the given direction
@@ -338,6 +442,14 @@ enum Status move_snake(Board* board, enum Direction dir, PointList* snake, int *
     *pvp = 0; // set pvp to active
   }
   
+  //If snake is about to eat a firework bonus
+  if(list_contains(beginning, board->fireworkBonus) || list_contains_anaconda(beginning,board->fireworkBonus,snakePtr) ){
+	  initialiseFireworkCoords(snakePtr);
+	  snakePtr->fireworksBeingFired = 1;
+	  change_coords(board->fireworkBonus,board);
+  }
+  
+  // If snake is about to eat a firebonus
   if (list_contains(beginning, board->fireBonuses) || list_contains_anaconda(beginning,board->fireBonuses,snakePtr)){ // if snake has hit a firebonus
     //remove_from_list( beginning, &(board->fireBonuses) ); // remove bonus from board
     
@@ -597,6 +709,7 @@ void add_new_food(Board* board) {
 	if(list_contains(new_food, board->foods) 
 	|| list_contains(new_food, board->maze)
 	|| list_contains(new_food, board->pvpbonus) 
+	|| list_contains(new_food, board->fireworkBonus)
 	|| list_contains(new_food, board->snake ) 
 	|| list_contains(new_food, board->snakeB) 
 	|| list_contains_anaconda(board->snake, new_food, board->snake) 
@@ -623,6 +736,7 @@ void add_new_bonus(Board* board){
 	   while(!ok){
 	  new_pvpbonus = create_random_cell(board->xmax, board->ymax);
 	  if( list_contains(new_pvpbonus, board->pvpbonus) 
+	  || list_contains(new_pvpbonus, board->fireworkBonus)
 	  || list_contains(new_pvpbonus, board->maze)
 	  || list_contains(new_pvpbonus, board->foods ) 
 	  ||list_contains(new_pvpbonus, board->snake ) 
@@ -654,6 +768,7 @@ void add_new_firebonus(Board* board){
 		  newcell->y = rand() % board->ymax;
 		   
 		  if( list_contains(newcell, board->pvpbonus) 
+		  || list_contains(newcell, board->fireworkBonus)
 		  || list_contains(newcell, board->maze)
 		  || list_contains(newcell, board->foods ) 
 		  || list_contains(newcell, board->snake ) 
@@ -681,6 +796,7 @@ void add_new_firebonus(Board* board){
 	   while(!ok){
 	  new_firebonus = create_random_cell(board->xmax, board->ymax);
 	  if( list_contains(new_firebonus, board->pvpbonus) 
+	  || list_contains(new_firebonus, board->fireworkBonus)
 	  || list_contains(new_firebonus, board->maze)
 	  || list_contains(new_firebonus, board->foods ) 
 	  || list_contains(new_firebonus, board->snake ) 
@@ -724,12 +840,13 @@ PointList* create_cell(int x, int y) {
 }
 
 //fills in the Board structure from the given lists and dimensions
-Board* create_board(PointList* snake, PointList* snakeB, PointList* foods, PointList* pvpbonus, PointList* anacondaBonus, PointList* maze, int xmax, int ymax) {
+Board* create_board(PointList* snake, PointList* snakeB, PointList* foods, PointList* pvpbonus, PointList* fireBonuses, PointList* anacondaBonus, PointList* fireworkBonus, PointList* maze, int xmax, int ymax) {
   Board* board = malloc(sizeof(*board));
   board->foods = foods;
   board->snake = snake;
   board->snakeB = snakeB;
   board->pvpbonus = pvpbonus;
+  board->fireworkBonus = fireworkBonus;
   board->anacondaBonus = anacondaBonus;
   board->maze = maze;
   board->xmax = xmax;
@@ -749,8 +866,27 @@ PointList* create_snake() {
   a->score = 0;
   a->justScored = 0;
   a->fireBlocks = NULL;
+  a->fireworksBeingFired = 0; // set to false initially
   a->beingFired = 0; // set to false initially
   a->anacondaCountdown = 0; // set to 0 initially
+  a->fireworkA = (PointList*) malloc(sizeof(PointList));
+  a->fireworkA->fwIndependentOfSnake = 0;
+  a->fireworkB = (PointList*) malloc(sizeof(PointList));
+  a->fireworkB->fwIndependentOfSnake = 0;
+  a->fireworkC = (PointList*) malloc(sizeof(PointList));
+  a->fireworkC->fwIndependentOfSnake = 0;
+  a->fireworkD = (PointList*) malloc(sizeof(PointList));
+  a->fireworkD->fwIndependentOfSnake = 0;
+  a->fireworkE = (PointList*) malloc(sizeof(PointList));
+  a->fireworkE->fwIndependentOfSnake = 0;
+  a->fireworkF = (PointList*) malloc(sizeof(PointList));
+  a->fireworkF->fwIndependentOfSnake = 0;
+  a->fireworkG = (PointList*) malloc(sizeof(PointList));
+  a->fireworkG->fwIndependentOfSnake = 0;
+  a->fireworkH = (PointList*) malloc(sizeof(PointList));
+  a->fireworkH->fwIndependentOfSnake = 0;
+  a->fireworkI = (PointList*) malloc(sizeof(PointList));
+  a->fireworkI->fwIndependentOfSnake = 0;
   return a; //return head element address (start of list)
 }
 
@@ -776,13 +912,12 @@ void add_fireblock_tosnake(PointList* snakePtr){
 
 void add_new_anacondabonus(Board* board){
 	PointList* new_bonus;
-  //UPDATED by Mario: original code (now commented) was not releasing memory
-  // for cells allocated in non-valid positions, they were just ignored (mem leak!)
    bool ok = false;
    while(!ok){
   new_bonus = create_cell(board->xmax /2, board->ymax / 2 + 3);
   
   if(list_contains(new_bonus, board->pvpbonus) 
+  || list_contains(new_bonus, board->fireworkBonus)
   || list_contains(new_bonus, board->maze)
   || list_contains(new_bonus, board->foods ) 
   || list_contains(new_bonus, board->snake ) 
@@ -798,4 +933,28 @@ void add_new_anacondabonus(Board* board){
   new_bonus->next = board->anacondaBonus;
   board->anacondaBonus = new_bonus;
 }
+
+void add_new_fireworkbonus(Board* board){
+	PointList* new_bonus;
+   bool ok = false;
+   while(!ok){
+  new_bonus = create_random_cell(board->xmax, board->ymax);
+  
+  if(list_contains(new_bonus, board->pvpbonus) 
+  || list_contains(new_bonus, board->maze)
+  || list_contains(new_bonus, board->foods ) 
+  || list_contains(new_bonus, board->snake ) 
+  || list_contains(new_bonus, board->snakeB) 
+  || list_contains_anaconda(board->snake,new_bonus, board->snake) 
+  || list_contains_anaconda(board->snakeB,new_bonus, board->snakeB)  )
+    free(new_bonus); //not a valid location!
+    else //valid location for new food
+    ok = true;
+   }
+
+  //update board fireworkBonus as the newly created cell
+  new_bonus->next = board->fireworkBonus;
+  board->fireworkBonus = new_bonus;
+}
+
 
