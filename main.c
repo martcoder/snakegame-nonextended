@@ -21,7 +21,7 @@ void draw(Board* board){
     init_pair(34, COLOR_BLACK, COLOR_YELLOW);
     init_pair(38, COLOR_BLUE, COLOR_MAGENTA);
     init_pair(99, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(100, COLOR_MAGENTA, COLOR_WHITE);
+    init_pair(100, COLOR_YELLOW, COLOR_WHITE);
     init_pair(101, COLOR_MAGENTA, COLOR_BLACK);
     
     // draw the scores
