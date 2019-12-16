@@ -3,6 +3,8 @@
 The code builds upon the code created by Julia Evans from this repository: https://github.com/jvns/snake 
 I have used the same license as her, MIT license. It was also modified by Mario Mata (GCU) who added comments and adjusted existing code. 
 
+To play you use the arrow keys for direction, and the Enter key for special. 
+
 Features added by myself include:
 
 - Showing the score at middle top of screen
@@ -11,6 +13,10 @@ Features added by myself include:
 
 - Fireblocks : eat a fireblock power up and you can shoot a fireblock which will consume food in its path
   ( Enter for playerA, Space for playerB )
+
+- Fireworks : eat a fireworks power up and the firework explodes, and extinguishes at the edge 
+  of the screen..... but the last remaining one will explode again, and so on. There is a TIMEOUT
+  the stop it continuing forever. 
   
 - Anaconda power up : transform into a monster snake which guzzles food easily
 
@@ -26,4 +32,8 @@ For example when a snake eats a fireblock the hasFireblock variable in the snake
  - I changed the way food is eaten and a new one created, instead of freeing an item and creating a new one, I just changed the         coordinates of the existing food item when it is eaten, simulating it being removed and a new one made. 
  - For Anacondas I decided to keep the existing snakes points and just show additional blocks around it, this requires starting from the snake head block and then changing to the surrounding points to display blocks there too. This also meant that when eating food, I need to do extra checks for the snake head point and all surrounding points, which was a bit of a headache. It might have been better to make the anaconda actually have more blocks in the head rather than simulating it, but this is the way I did it. For example things like list_contains for anaconda needed a new function dedicated to anaconda checks. 
  - For fireblocks I created new functions similar to the move_snake but for fireblocks. As they span a few points I did these a similar way to Anacondas which is to move the centre block and simulate the surrounding blocks. I also have these moving double speed, which is done by calling move on them twice for every one of move_snake. 
-
+ - For fireworks I did similarly to fireblocks but at normal speed, but also created 8 firework items in each snake, which 
+   are moved outward from the snake's head coordinates when a firework bonus is hit. The biggest 
+   difference is having them explode again, which requires code for checking how many are off the 
+   board, and if only 1 left, check it's not near the edge, if not then explode again by initialising
+   firework coordinates to the last remaining one's coords, and then moving out again from there.  
