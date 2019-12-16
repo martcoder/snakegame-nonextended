@@ -1,4 +1,4 @@
-// Additional comments by Mario Mata, GCU
+// Additional comments by Mario Mata, GCU, and Martin Kettle
 #include "backend.h" //core functionalities and data structures
 #include "frontend.h" //paint functions and key processing
 #include "maze.h"
@@ -21,6 +21,8 @@ void draw(Board* board){
     init_pair(34, COLOR_BLACK, COLOR_YELLOW);
     init_pair(38, COLOR_BLUE, COLOR_MAGENTA);
     init_pair(99, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(100, COLOR_MAGENTA, COLOR_WHITE);
+    init_pair(101, COLOR_MAGENTA, COLOR_BLACK);
     
     // draw the scores
     if(board->snake)
@@ -56,6 +58,10 @@ void draw(Board* board){
     //display_points(board,board->fireBonuses, 230);
     display_points(board,board->fireBonuses, 'o',9);
     
+    //draw firework bonus
+    attron(COLOR_PAIR(100));
+    display_points(board,board->fireworkBonus, 'X',100);
+    
     // draw anaconda bonus
     attron(COLOR_PAIR(38));
     //display_points(board,board->anacondaBonus, 198);
@@ -76,6 +82,42 @@ void draw(Board* board){
       }
     }
     
+    // draw fireworks
+    attron(COLOR_PAIR(101));
+
+	  if(board->snake->fireworksBeingFired == 1){
+		    
+            display_points(board,board->snake->fireworkA, '*',101);
+            display_points(board,board->snake->fireworkB, '*',101);
+            display_points(board,board->snake->fireworkC, '*',101);
+            display_points(board,board->snake->fireworkD, '*',101);
+            display_points(board,board->snake->fireworkE, '*',101);
+            display_points(board,board->snake->fireworkF, '*',101);
+            display_points(board,board->snake->fireworkG, '*',101);
+            display_points(board,board->snake->fireworkH, '*',101);
+            
+            board->snake->fireworksTimeout = board->snake->fireworksTimeout - 1; // decrement fireworks timeout
+            
+            //board->snake->fireworksBeingFired = 0;
+            // display_points(board,board->snake->fireBlocks, 230); // for extended symbols 
+    }
+    if(board->snakeB){
+      if(board->snakeB->fireworksBeingFired == 1){
+
+            display_points(board,board->snakeB->fireworkA, '*',100);
+            display_points(board,board->snakeB->fireworkB, '*',100);
+            display_points(board,board->snakeB->fireworkC, '*',100);
+            display_points(board,board->snakeB->fireworkD, '*',100);
+            display_points(board,board->snakeB->fireworkE, '*',100);
+            display_points(board,board->snakeB->fireworkF, '*',100);
+            display_points(board,board->snakeB->fireworkG, '*',100);
+            display_points(board,board->snakeB->fireworkH, '*',100);
+            // display_points(board,board->snakeB->fireBlocks, 230); // for extended symbols 
+            
+            board->snakeB->fireworksTimeout = board->snakeB->fireworksTimeout - 1; // decrement fireworks timeout
+      }
+    }
+    
     refresh(); //paint screen
 }
 
@@ -92,6 +134,15 @@ void moveFireblocks(Board* board){
           move_fireblocks(board,board->snakeB);
       }
     }
+}
+
+void moveFireworks(Board* board){
+	if(board->snake->fireworksBeingFired == 1)
+	  move_fireworks(board, board->snake);
+	if(board->snakeB){ 
+      if(board->snakeB->fireworksBeingFired == 1)
+	    move_fireworks(board,board->snakeB);	
+	}
 }
 
 int main() {
@@ -119,16 +170,25 @@ int main() {
   // snakeA doesnt exist yet, passing as NULL
     //Food list is not passed yet (NULL passed instead).
     // Bonus list doesnt exist yet, passing as NULL. 
-  Board* board = create_board(create_snake(), NULL, NULL, NULL, NULL, create_maze(xmax,ymax), xmax, ymax);
+  Board* board = create_board(create_snake(), NULL, NULL, NULL, NULL, NULL, NULL, create_maze(xmax,ymax), xmax, ymax);
   int i;
-  for (i = 0; i < board->xmax -50; i++) { // base the number of foods on the size of the board
-    add_new_food(board); //add food pieces to the board
+  if( (board->ymax ) < 5){
+	  for (i = 0; i < 6; i++) { // base the number of foods on the size of the board
+        add_new_food(board); //add food pieces to the board
+      }
+  }
+  else{
+	   for (i = 0; i < board->ymax ; i++) { // base the number of foods on the size of the board
+		  add_new_food(board); //add food pieces to the board
+		}
   }
   
   // Add pvp bonus to board
   add_new_bonus(board);
   // Add firesnake bonus to board
   add_new_firebonus(board);
+  // Add firework bonus to board
+  add_new_fireworkbonus(board);
   // Add anaconda super bonus to board
   add_new_anacondabonus(board);
   
@@ -138,13 +198,11 @@ int main() {
     //Draw snake and food lists
     draw(board);
     
-    // first time
+    // first time - move fireblocks which are travelling independent of snake;
     moveFireblocks(board);
-
-    // to show updated fireblocks
-    //draw(board);wdsdwwdawdaw
     
-    //showScores(board);
+    // move fireworks blocks
+    moveFireworks(board);
     
     //refresh(); //paint screen
 
@@ -187,13 +245,13 @@ int main() {
 	
 	// If anaconda in play is about to expire, add new anaconda bonus to board
 	if(board->snakeB){
-	  if(board->snakeB->anacondaCountdown == ANACONDA_TIME)
+	  if(board->snakeB->anacondaCountdown == BONUS_TIMEOUT)
 	    splashAnaconda(board->xmax,board->ymax);
 	  if(	board->snakeB->anacondaCountdown > 1 &&  board->snakeB->anacondaCountdown < 3 ){
 	    add_new_anacondabonus(board);
 	  }
 	}
-	if(board->snake->anacondaCountdown == ANACONDA_TIME)
+	if(board->snake->anacondaCountdown == BONUS_TIMEOUT)
 	  splashAnaconda(board->xmax,board->ymax);
 	if(board->snake->anacondaCountdown > 1 && board->snake->anacondaCountdown < 3 ){
 	  	add_new_anacondabonus(board);

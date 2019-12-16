@@ -1,5 +1,5 @@
 #include <stdbool.h> //bool type (uchar) and true/false defines
-#define ANACONDA_TIME 500
+#define BONUS_TIMEOUT 500
 
 //enum to handle movement directions
 enum Direction { UP, DOWN, LEFT, RIGHT, SPACE, ENTER };
@@ -26,11 +26,27 @@ struct PointList {
   int usingSpecial; // special key has been pressed
   struct PointList* fireBlocks; // fireblock within a snake
   int anacondaCountdown; // to timeout anaconda mode
+  int fireworksBeingFired;
+  int fireworksTimeout;
+  struct PointList* fireworkA;
+  struct PointList* fireworkB;
+  struct PointList* fireworkC;
+  struct PointList* fireworkD;
+  struct PointList* fireworkE;
+  struct PointList* fireworkF;
+  struct PointList* fireworkG;
+  struct PointList* fireworkH;
+  struct PointList* fireworkI;
 
   // For fireblocks
   int beingFired; // if fireblock has been fired
   int independentOfSnake; // if fireblock is now travelling outside the snake
   int extinguishGraphics; // if the fireblock extinguish graphics need to be shown
+  
+  // For fireworks
+  int fwBeingFired;
+  
+  
 };
 
 typedef struct PointList PointList;
@@ -45,6 +61,7 @@ typedef struct {
   PointList* pvpbonus; // pvp bonus
   PointList* fireBonuses; // fireblocks bonus
   PointList* anacondaBonus; // anaconda super bonus
+  PointList* fireworkBonus; // firework bonus
   PointList* maze; // list of maze blocks
   int xmax; //screen cols
   int ymax; // screen rows
@@ -57,6 +74,8 @@ bool is_same_place(PointList* cell1, PointList* cell2);
 void newFireBlockPosition(PointList* fireblock, Board* board);
 // Move each fireblock
 void move_fireblocks(Board* board, PointList* snakePtr);
+// Move fireworks for the snake in question
+void move_fireworks(Board* board, PointList* snakePtr);
 //This function tries to move the full snake in the given direction
 enum Status move_snake(Board* board, enum Direction dir, PointList* snake, int * pvp);
 //shift snake does the actual tranferring of x,y coords each snake part in turn
@@ -70,7 +89,7 @@ PointList* create_random_cell(int xmax, int ymax);
 //Generates the initial snake (length 2)
 PointList* create_snake();
 //fills in the Board structure from the given lists and dimensions
-Board* create_board(PointList* foods, PointList* snake, PointList* snakeA, PointList* bonuses, PointList* anacondaBonus,PointList* maze, int xmax, int ymax);
+Board* create_board(PointList* snake, PointList* snakeB, PointList* foods, PointList* pvpbonus, PointList* fireBonuses, PointList* anacondaBonus, PointList* fireworkBonus, PointList* maze, int xmax, int ymax);
 // Checks if a given point is contained in a list of points
 bool list_contains(PointList* cell, PointList* list);
 bool list_contains_anaconda(PointList* beginning, PointList* list, PointList* snakePtr);
@@ -80,6 +99,8 @@ bool list_contains_snake_then_break(PointList* fires, PointList* snakePtr);
 bool remove_from_list(PointList* elt, PointList** list);
 // change item x and y to different values
 bool change_coords(PointList* item, Board* board);
+//Initialises firework coordinates to be that of their snake head
+void initialiseFireworkCoordsAndSetBeingFired(PointList* snakePtr, int x, int y);
 // Updates the item in list's coordinates if in anaconda
 void update_item_coords_in_list_if_in_anaconda(PointList* beginning, PointList* list, Board* board);
 void update_item_coords_in_list_if_in_fireblock(PointList* beginning, PointList* list, Board* board);
@@ -91,6 +112,8 @@ void add_new_food(Board* board);
 void add_new_bonus(Board* board);
 
 void add_new_firebonus(Board* board);
+
+void add_new_fireworkbonus(Board* board);
 
 void add_new_anacondabonus(Board* board);
 
