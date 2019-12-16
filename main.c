@@ -59,8 +59,8 @@ void draw(Board* board){
     display_points(board,board->fireBonuses, 'o',9);
     
     //draw firework bonus
-    attron(COLOR_PAIR(100));
-    display_points(board,board->fireworkBonus, 'X',100);
+    //attron(COLOR_PAIR(100));
+    display_points(board,board->fireworkBonus, 'X',9);
     
     // draw anaconda bonus
     attron(COLOR_PAIR(38));
