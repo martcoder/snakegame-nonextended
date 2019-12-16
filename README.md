@@ -24,6 +24,13 @@ Features added by myself include:
 
 - Splash screens for the start of the game, for when PvP bonus is eaten, for when Anaconda bonus is eaten
 
+TO COMPILE:
+ In linux run this:
+ sh compile.sh
+
+TO RUN:
+  ./snakegame
+
 NOTES FOR DEVELOPERS:
 - This is the non-extended version, which means that it doesn't used extended characterset for symbols or custom colours, which means some of the symbols used are different from the extended version, which is at https://github.com/martcoder/snakegame 
 - The way I went about doing these features, apart from the coordinates method, was to add variables to the PointList struct, some for snakes, some for fireblocks, some for anaconda, the PointList struct is in backend.h
