@@ -17,7 +17,7 @@ void draw(Board* board){
     init_pair(8, COLOR_CYAN, COLOR_BLACK);
     init_pair(12, COLOR_CYAN, COLOR_GREEN);
     init_pair(14, COLOR_CYAN, COLOR_RED);
-    init_pair(20, COLOR_CYAN, COLOR_YELLOW); // for if basic colors are available
+    init_pair(20, COLOR_CYAN, COLOR_YELLOW); 
     init_pair(34, COLOR_BLACK, COLOR_YELLOW);
     init_pair(38, COLOR_BLUE, COLOR_MAGENTA);
     init_pair(99, COLOR_YELLOW, COLOR_BLACK);
@@ -122,7 +122,7 @@ void draw(Board* board){
     
     refresh(); //paint screen
 }
-
+// function to call backend.c move_fireblocks which moves travelling fireblock to next position
 void moveFireblocks(Board* board){
 
   	if(board->snake->fireBlocks){
@@ -138,6 +138,7 @@ void moveFireblocks(Board* board){
     }
 }
 
+// function to call backend.c move_fireworks which moves fireworks to next position
 void moveFireworks(Board* board){
 	if(board->snake->fireworksBeingFired == 1)
 	  move_fireworks(board, board->snake);
@@ -169,17 +170,23 @@ int main() {
   enum Direction * dir_playerBptr = &dir_playerB; 
 
   //create snake list, and pass it to create_board.
-  // snakeA doesnt exist yet, passing as NULL
-    //Food list is not passed yet (NULL passed instead).
-    // Bonus list doesnt exist yet, passing as NULL. 
+  // snakeB doesnt exist yet, passing as NULL
+  //Food list is not passed yet (NULL passed instead).
+  // PvP Bonus list doesnt exist yet, passing as NULL.
+  // Fireblock bonus list passing as NULL
+  // Anaconda bonus passing as NULL
+  // fireworks bonus passing as NULL
+  // Creating maze and passing returned PointList
+  // Passing xmax
+  // Passing ymax 
   Board* board = create_board(create_snake(), NULL, NULL, NULL, NULL, NULL, NULL, create_maze(xmax,ymax), xmax, ymax);
   int i;
-  if( (board->ymax ) < 5){
-	  for (i = 0; i < 6; i++) { // base the number of foods on the size of the board
+  if( (board->ymax ) < 10){ // if a small board
+	  for (i = 0; i < 10; i++) { // create a minimum number of food items
         add_new_food(board); //add food pieces to the board
       }
   }
-  else{
+  else{ // if not a small board
 	   for (i = 0; i < board->ymax ; i++) { // base the number of foods on the size of the board
 		  add_new_food(board); //add food pieces to the board
 		}
@@ -205,8 +212,6 @@ int main() {
     
     // move fireworks blocks
     moveFireworks(board);
-    
-    //refresh(); //paint screen
 
     int pvpactivator = 1;
     int * pvp = &pvpactivator;
@@ -217,16 +222,17 @@ int main() {
     int pBscore = 0;
     int * pBscorePtr = &pBscore;
     
+    // Read in the keyboard to see which direction is being pressed or if special key is pressed, reads for playerA and playerB
     get_next_move(*dir_playerAptr, *dir_playerBptr, dir_playerAptr, dir_playerBptr,board->snake,board->snakeB ? board->snakeB : NULL); //get next move direction
 	//update snake direction
     enum Status status = move_snake(board, *dir_playerAptr,board->snake, pvp);
     
-    if (status == FAILURE) break; //finish game
+    if (status == FAILURE) break; //finish game if move not okay, e.g. snake ate itself
 
     if(board->snakeB){
       
-       status = move_snake(board, *dir_playerBptr,board->snakeB, pvp);
-      if (status == FAILURE) break; //finish game
+       status = move_snake(board, *dir_playerBptr,board->snakeB, pvp); // move player B snake
+      if (status == FAILURE) break; //finish game if move not okay e.g. snake hit itself
     }
     
     //Move fireblocks for 2nd time to simulate double speed
@@ -245,7 +251,7 @@ int main() {
         *pvp = 1; // deactivate again
 	}
 	
-	// If anaconda in play is about to expire, add new anaconda bonus to board
+	// player B : If anaconda in play is about to expire, respawn anaconda bonus in centre of the maze
 	if(board->snakeB){
 	  if(board->snakeB->anacondaCountdown == ANACONDA_TIMEOUT)
 	    splashAnaconda(board->xmax,board->ymax);
@@ -253,6 +259,7 @@ int main() {
 	    add_new_anacondabonus(board);
 	  }
 	}
+	// player A : If anaconda mode is active but about to end, respawn the Anaconda bonus in the centre of the maze
 	if(board->snake->anacondaCountdown == ANACONDA_TIMEOUT)
 	  splashAnaconda(board->xmax,board->ymax);
 	if(board->snake->anacondaCountdown > 1 && board->snake->anacondaCountdown < 3 ){
