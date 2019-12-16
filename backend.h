@@ -1,6 +1,6 @@
 #include <stdbool.h> //bool type (uchar) and true/false defines
-#define BONUS_TIMEOUT 300
-#define RESPLODE_TIMEOUT 30
+#define BONUS_TIMEOUT 200
+#define RESPLODE_TIMEOUT 18
 
 //enum to handle movement directions
 enum Direction { UP, DOWN, LEFT, RIGHT, SPACE, ENTER };
