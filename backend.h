@@ -1,5 +1,5 @@
 #include <stdbool.h> //bool type (uchar) and true/false defines
-#define ANACONDA_TIME 500
+#define BONUS_TIMEOUT 500
 
 //enum to handle movement directions
 enum Direction { UP, DOWN, LEFT, RIGHT, SPACE, ENTER };
@@ -27,6 +27,7 @@ struct PointList {
   struct PointList* fireBlocks; // fireblock within a snake
   int anacondaCountdown; // to timeout anaconda mode
   int fireworksBeingFired;
+  int fireworksTimeout;
   struct PointList* fireworkA;
   struct PointList* fireworkB;
   struct PointList* fireworkC;
@@ -43,7 +44,8 @@ struct PointList {
   int extinguishGraphics; // if the fireblock extinguish graphics need to be shown
   
   // For fireworks
-  int fwIndependentOfSnake;
+  int fwBeingFired;
+  
   
 };
 
@@ -98,7 +100,7 @@ bool remove_from_list(PointList* elt, PointList** list);
 // change item x and y to different values
 bool change_coords(PointList* item, Board* board);
 //Initialises firework coordinates to be that of their snake head
-void initialiseFireworkCoords(PointList* snakePtr);
+void initialiseFireworkCoordsAndSetBeingFired(PointList* snakePtr, int x, int y);
 // Updates the item in list's coordinates if in anaconda
 void update_item_coords_in_list_if_in_anaconda(PointList* beginning, PointList* list, Board* board);
 void update_item_coords_in_list_if_in_fireblock(PointList* beginning, PointList* list, Board* board);
