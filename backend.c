@@ -579,7 +579,7 @@ enum Status move_snake(Board* board, enum Direction dir, PointList* snake, int *
   // if snake consumes anaconda super bonus
   if (list_contains(beginning, board->anacondaBonus)){ // if snake has hit a superbonus
     remove_from_list( beginning, &(board->anacondaBonus) ); // remove bonus from board
-    snakePtr->anacondaCountdown = BONUS_TIMEOUT; // activate Anaconda Mode by setting countdown value, counts down in frontend.c, gets checked in main.c
+    snakePtr->anacondaCountdown = ANACONDA_TIMEOUT; // activate Anaconda Mode by setting countdown value, counts down in frontend.c, gets checked in main.c
   }
 
   if (list_contains(beginning, board->pvpbonus) || list_contains_anaconda(beginning,board->pvpbonus,snakePtr)){ // if snake has hit a bonus

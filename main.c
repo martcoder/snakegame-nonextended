@@ -247,13 +247,13 @@ int main() {
 	
 	// If anaconda in play is about to expire, add new anaconda bonus to board
 	if(board->snakeB){
-	  if(board->snakeB->anacondaCountdown == BONUS_TIMEOUT)
+	  if(board->snakeB->anacondaCountdown == ANACONDA_TIMEOUT)
 	    splashAnaconda(board->xmax,board->ymax);
 	  if(	board->snakeB->anacondaCountdown > 1 &&  board->snakeB->anacondaCountdown < 3 ){
 	    add_new_anacondabonus(board);
 	  }
 	}
-	if(board->snake->anacondaCountdown == BONUS_TIMEOUT)
+	if(board->snake->anacondaCountdown == ANACONDA_TIMEOUT)
 	  splashAnaconda(board->xmax,board->ymax);
 	if(board->snake->anacondaCountdown > 1 && board->snake->anacondaCountdown < 3 ){
 	  	add_new_anacondabonus(board);
