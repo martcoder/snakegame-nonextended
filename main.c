@@ -83,20 +83,21 @@ void draw(Board* board){
     }
     
     // draw fireworks
-    attron(COLOR_PAIR(101));
+    attron(COLOR_PAIR(11));
 
 	  if(board->snake->fireworksBeingFired == 1){
 		    
-            display_points(board,board->snake->fireworkA, '*',101);
-            display_points(board,board->snake->fireworkB, '*',101);
-            display_points(board,board->snake->fireworkC, '*',101);
-            display_points(board,board->snake->fireworkD, '*',101);
-            display_points(board,board->snake->fireworkE, '*',101);
-            display_points(board,board->snake->fireworkF, '*',101);
-            display_points(board,board->snake->fireworkG, '*',101);
-            display_points(board,board->snake->fireworkH, '*',101);
+            display_points(board,board->snake->fireworkA, '*',11);
+            display_points(board,board->snake->fireworkB, '*',11);
+            display_points(board,board->snake->fireworkC, '*',11);
+            display_points(board,board->snake->fireworkD, '*',11);
+            display_points(board,board->snake->fireworkE, '*',11);
+            display_points(board,board->snake->fireworkF, '*',11);
+            display_points(board,board->snake->fireworkG, '*',11);
+            display_points(board,board->snake->fireworkH, '*',11);
             
             board->snake->fireworksTimeout = board->snake->fireworksTimeout - 1; // decrement fireworks timeout
+            board->snake->fireworksReplodeCountdown = board->snake->fireworksReplodeCountdown - 1;
             
             //board->snake->fireworksBeingFired = 0;
             // display_points(board,board->snake->fireBlocks, 230); // for extended symbols 
@@ -104,17 +105,18 @@ void draw(Board* board){
     if(board->snakeB){
       if(board->snakeB->fireworksBeingFired == 1){
 
-            display_points(board,board->snakeB->fireworkA, '*',100);
-            display_points(board,board->snakeB->fireworkB, '*',100);
-            display_points(board,board->snakeB->fireworkC, '*',100);
-            display_points(board,board->snakeB->fireworkD, '*',100);
-            display_points(board,board->snakeB->fireworkE, '*',100);
-            display_points(board,board->snakeB->fireworkF, '*',100);
-            display_points(board,board->snakeB->fireworkG, '*',100);
-            display_points(board,board->snakeB->fireworkH, '*',100);
+            display_points(board,board->snakeB->fireworkA, '*',22);
+            display_points(board,board->snakeB->fireworkB, '*',22);
+            display_points(board,board->snakeB->fireworkC, '*',22);
+            display_points(board,board->snakeB->fireworkD, '*',22);
+            display_points(board,board->snakeB->fireworkE, '*',22);
+            display_points(board,board->snakeB->fireworkF, '*',22);
+            display_points(board,board->snakeB->fireworkG, '*',22);
+            display_points(board,board->snakeB->fireworkH, '*',22);
             // display_points(board,board->snakeB->fireBlocks, 230); // for extended symbols 
             
             board->snakeB->fireworksTimeout = board->snakeB->fireworksTimeout - 1; // decrement fireworks timeout
+            board->snakeB->fireworksReplodeCountdown = board->snakeB->fireworksReplodeCountdown - 1;
       }
     }
     

@@ -502,27 +502,31 @@ void move_fireworks(Board* board, PointList* snakePtr){
 	  countFinished++;
 	  
 	
-	// If only 1 remaining then do the classic firework thing of exploding a second time....
-	if(countFinished == 7){
+	// If only 1 remaining or replode countdown almost timed out, then do the classic firework thing of exploding a second time....
+	if(countFinished == 7 || snakePtr->fireworksReplodeCountdown == 1){
+		int which = rand() % 8;
+		if(which == 0)
+		  which = 1;
 		// The if statements should find the single remaining firework, and also check that it's not really close to the board edge, this additional constraint also means it won't continue forever...
-		if(snakePtr->fireworkA->beingFired == 1 && ( snakePtr->fireworkA->x > 2 && snakePtr->fireworkA->x < board->xmax - 2 && snakePtr->fireworkA->y > 2 && snakePtr->fireworkA->y < board->ymax - 2 ) )
+		if(which == 1 && snakePtr->fireworkA->beingFired == 1 && ( snakePtr->fireworkA->x > 2 && snakePtr->fireworkA->x < board->xmax - 2 && snakePtr->fireworkA->y > 2 && snakePtr->fireworkA->y < board->ymax - 2 ) )
 		  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->fireworkA->x, snakePtr->fireworkA->y); // Start from the current coordinates of the last firework
-		if(snakePtr->fireworkB->beingFired == 1 && ( snakePtr->fireworkB->x > 2 && snakePtr->fireworkB->x < board->xmax - 2 && snakePtr->fireworkB->y > 2 && snakePtr->fireworkB->y < board->ymax - 2 ))
+		if(which == 2 && snakePtr->fireworkB->beingFired == 1 && ( snakePtr->fireworkB->x > 2 && snakePtr->fireworkB->x < board->xmax - 2 && snakePtr->fireworkB->y > 2 && snakePtr->fireworkB->y < board->ymax - 2 ))
 		  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->fireworkB->x, snakePtr->fireworkB->y); // Start from the current coordinates of the last firework
-		if(snakePtr->fireworkC->beingFired == 1 && ( snakePtr->fireworkC->x > 2 && snakePtr->fireworkC->x < board->xmax - 2 && snakePtr->fireworkC->y > 2 && snakePtr->fireworkC->y < board->ymax - 2 ))
+		if(which == 3 && snakePtr->fireworkC->beingFired == 1 && ( snakePtr->fireworkC->x > 2 && snakePtr->fireworkC->x < board->xmax - 2 && snakePtr->fireworkC->y > 2 && snakePtr->fireworkC->y < board->ymax - 2 ))
 		  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->fireworkC->x, snakePtr->fireworkC->y); // Start from the current coordinates of the last firework
-		if(snakePtr->fireworkD->beingFired == 1 && ( snakePtr->fireworkD->x > 2 && snakePtr->fireworkD->x < board->xmax - 2 && snakePtr->fireworkD->y > 2 && snakePtr->fireworkD->y < board->ymax - 2 ))
+		if(which == 4 && snakePtr->fireworkD->beingFired == 1 && ( snakePtr->fireworkD->x > 2 && snakePtr->fireworkD->x < board->xmax - 2 && snakePtr->fireworkD->y > 2 && snakePtr->fireworkD->y < board->ymax - 2 ))
 		  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->fireworkD->x, snakePtr->fireworkD->y); // Start from the current coordinates of the last firework
-		if(snakePtr->fireworkE->beingFired == 1 && ( snakePtr->fireworkE->x > 2 && snakePtr->fireworkE->x < board->xmax - 2 && snakePtr->fireworkE->y > 2 && snakePtr->fireworkE->y < board->ymax - 2 ))
+		if(which == 5 && snakePtr->fireworkE->beingFired == 1 && ( snakePtr->fireworkE->x > 2 && snakePtr->fireworkE->x < board->xmax - 2 && snakePtr->fireworkE->y > 2 && snakePtr->fireworkE->y < board->ymax - 2 ))
 		  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->fireworkE->x, snakePtr->fireworkE->y); // Start from the current coordinates of the last firework
-		if(snakePtr->fireworkF->beingFired == 1 && ( snakePtr->fireworkF->x > 2 && snakePtr->fireworkF->x < board->xmax - 2 && snakePtr->fireworkF->y > 2 && snakePtr->fireworkF->y < board->ymax - 2 ))
+		if(which == 6 && snakePtr->fireworkF->beingFired == 1 && ( snakePtr->fireworkF->x > 2 && snakePtr->fireworkF->x < board->xmax - 2 && snakePtr->fireworkF->y > 2 && snakePtr->fireworkF->y < board->ymax - 2 ))
 		  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->fireworkF->x, snakePtr->fireworkF->y); // Start from the current coordinates of the last firework
-		if(snakePtr->fireworkG->beingFired == 1 && ( snakePtr->fireworkG->x > 2 && snakePtr->fireworkG->x < board->xmax - 2 && snakePtr->fireworkG->y > 2 && snakePtr->fireworkG->y < board->ymax - 2 ))
+		if(which == 7 && snakePtr->fireworkG->beingFired == 1 && ( snakePtr->fireworkG->x > 2 && snakePtr->fireworkG->x < board->xmax - 2 && snakePtr->fireworkG->y > 2 && snakePtr->fireworkG->y < board->ymax - 2 ))
 		  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->fireworkG->x, snakePtr->fireworkG->y); // Start from the current coordinates of the last firework
-		if(snakePtr->fireworkH->beingFired == 1 && ( snakePtr->fireworkH->x > 2 && snakePtr->fireworkH->x < board->xmax - 2 && snakePtr->fireworkH->y > 2 && snakePtr->fireworkH->y < board->ymax - 2 ))
+		if(which == 8 && snakePtr->fireworkH->beingFired == 1 && ( snakePtr->fireworkH->x > 2 && snakePtr->fireworkH->x < board->xmax - 2 && snakePtr->fireworkH->y > 2 && snakePtr->fireworkH->y < board->ymax - 2 ))
 		  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->fireworkH->x, snakePtr->fireworkH->y); // Start from the current coordinates of the last firework
 		
 		allFinished = 0;
+		snakePtr->fireworksReplodeCountdown = RESPLODE_TIMEOUT / 3;
     }
     /*else{
       char strB[12];
@@ -592,6 +596,7 @@ enum Status move_snake(Board* board, enum Direction dir, PointList* snake, int *
 	  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->x, snakePtr->y);
 	  snakePtr->fireworksBeingFired = 1;
 	  snakePtr->fireworksTimeout = BONUS_TIMEOUT / 2;
+	  snakePtr->fireworksReplodeCountdown = RESPLODE_TIMEOUT;
 	  board->fireworkBonus->x = -5; board->fireworkBonus->y = -5; // move off the board
 
   }
@@ -1017,6 +1022,7 @@ PointList* create_snake() {
   a->fireworksTimeout = 0; // inactive initially 
   a->beingFired = 0; // set to false initially
   a->anacondaCountdown = 0; // set to 0 initially
+  a->fireworksReplodeCountdown = 0;
   a->fireworkA = (PointList*) malloc(sizeof(PointList));
   a->fireworkA->fwBeingFired = 0;
   a->fireworkB = (PointList*) malloc(sizeof(PointList));

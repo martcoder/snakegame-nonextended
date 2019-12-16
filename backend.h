@@ -1,5 +1,6 @@
 #include <stdbool.h> //bool type (uchar) and true/false defines
-#define BONUS_TIMEOUT 500
+#define BONUS_TIMEOUT 300
+#define RESPLODE_TIMEOUT 30
 
 //enum to handle movement directions
 enum Direction { UP, DOWN, LEFT, RIGHT, SPACE, ENTER };
@@ -28,6 +29,7 @@ struct PointList {
   int anacondaCountdown; // to timeout anaconda mode
   int fireworksBeingFired;
   int fireworksTimeout;
+  int fireworksReplodeCountdown; // for replode
   struct PointList* fireworkA;
   struct PointList* fireworkB;
   struct PointList* fireworkC;
