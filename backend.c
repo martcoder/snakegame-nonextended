@@ -1041,6 +1041,8 @@ PointList* create_snake() {
   a->fireworkH->fwBeingFired = 0;
   a->fireworkI = (PointList*) malloc(sizeof(PointList));
   a->fireworkI->fwBeingFired = 0;
+  
+  add_fireblock_tosnake(a); // add fireblock to the snake!!!
   return a; //return head element address (start of list)
 }
 
