@@ -257,9 +257,7 @@ void move_fireblocks(Board* board, PointList* snakePtr){
 		}
 		
 		fires->independentOfSnake = 1; // activate
-		
-		//PointList* newfireCoords = create_cell(fires->x,fires->y);
-		
+			
 		// Update location based on direction of fireblock
 		newFireBlockPosition(fires, board);
 		
@@ -271,7 +269,6 @@ void move_fireblocks(Board* board, PointList* snakePtr){
 			update_item_coords_in_list_if_in_fireblock(fires,board->foods,board);
 		}
 
-
                 // if fireblock hits a snake, cut the snake at that point and halve the snake's score
 		/*list_contains_snake_then_break(fires, board->snake);
 		if(board->snakeB)
@@ -281,8 +278,8 @@ void move_fireblocks(Board* board, PointList* snakePtr){
 		// Extinguish fireblock if edge of terminal is reached
 		if( (fires->x > board->xmax) || (fires->x < 0) || (fires->y > board->ymax) || (fires->y < 0) ){
 		    fires->beingFired = 0; //deactivate
-                    fires->independentOfSnake = 1; //deactivate
-                    //fires->extinguishGraphics = 1;
+            fires->independentOfSnake = 0; //deactivate
+            //fires->extinguishGraphics = 1;
 		}
 	}	
 }
@@ -621,13 +618,15 @@ enum Status move_snake(Board* board, enum Direction dir, PointList* snake, int *
   
   //Also do fireblock move 
   
-  if(snakePtr->usingSpecial == 1){ // using special activated, start 'firing' fireblock
+  if(snakePtr->usingSpecial == 1 && snakePtr->hasFireblock == 1){ // using special activated, start 'firing' fireblock
     
 	snakePtr->fireBlocks->beingFired = 1; // activate
 	snakePtr->hasFireblock = 0; // snake no longer has fireblock
         move_fireblocks(board,snakePtr);
         snakePtr->usingSpecial = 0; // set back to inactive until next time special key pressed
   }
+  
+  snakePtr->usingSpecial = 0; // reset it wether or not the snake hasFireblock, to avoid 'queing up' a shot
 
   
   // Check for collision with food (snake eats it!)
