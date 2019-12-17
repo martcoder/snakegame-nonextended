@@ -19,7 +19,7 @@ struct PointList {
   int y;
   struct PointList* next;
   
-  // For snakes
+  // Variables for snakes
   char id;
   int score;
   int justScored; // delay countdown for score changed graphic
@@ -41,20 +41,18 @@ struct PointList {
   struct PointList* fireworkH;
   struct PointList* fireworkI;
 
-  // For fireblocks
+  // Variables for fireblocks
   int beingFired; // if fireblock has been fired
   int independentOfSnake; // if fireblock is now travelling outside the snake
   int extinguishGraphics; // if the fireblock extinguish graphics need to be shown
   
-  // For fireworks
+  // Variable for fireworks
   int fwBeingFired;
-  
   
 };
 
 typedef struct PointList PointList;
 
-//typedef struct Coords Coords;
 
 //struct containing the full game board info
 typedef struct {
@@ -68,7 +66,6 @@ typedef struct {
   PointList* maze; // list of maze blocks
   int xmax; //screen cols
   int ymax; // screen rows
-  //Coords* generalCoords;
 } Board;
 
 //Checks if two point structures have the same coordinates
@@ -95,8 +92,11 @@ PointList* create_snake();
 Board* create_board(PointList* snake, PointList* snakeB, PointList* foods, PointList* pvpbonus, PointList* fireBonuses, PointList* anacondaBonus, PointList* fireworkBonus, PointList* maze, int xmax, int ymax);
 // Checks if a given point is contained in a list of points
 bool list_contains(PointList* cell, PointList* list);
+// Checks if a given point is within anaconda points of a particular snake
 bool list_contains_anaconda(PointList* beginning, PointList* list, PointList* snakePtr);
+// Checks if a given point is within fireblock points
 bool list_contains_fireblock(PointList* beginning, PointList* list);
+// Checks if a list's points are in a snake's points, if so then decrement snake score and break snake at the point of contact (not in use currently)
 bool list_contains_snake_then_break(PointList* fires, PointList* snakePtr);
 //remove element elt from list, update list pointer
 bool remove_from_list(PointList* elt, PointList** list);
@@ -104,22 +104,24 @@ bool remove_from_list(PointList* elt, PointList** list);
 bool change_coords(PointList* item, Board* board);
 //Initialises firework coordinates to be that of their snake head
 void initialiseFireworkCoordsAndSetBeingFired(PointList* snakePtr, int x, int y);
-// Updates the item in list's coordinates if in anaconda
+// Updates the item in list's coordinates if in anaconda, e.g. to 'respawn' food that gets eaten
 void update_item_coords_in_list_if_in_anaconda(PointList* beginning, PointList* list, Board* board);
+// Updates the item in lists's coordinates if in fireblock, e.g. to 'respawn' food that gets eaten
 void update_item_coords_in_list_if_in_fireblock(PointList* beginning, PointList* list, Board* board);
 // Updates the item in list's coordinates if same as new point
 void update_item_coords_in_list(PointList* beginning, PointList* list, Board* board);
 //Adds a new food point to the food list in a random location
 void add_new_food(Board* board);
-
+// Adds a new pvp bonus to the board
 void add_new_bonus(Board* board);
-
+// Adds a new fireblock bonus to the board
 void add_new_firebonus(Board* board);
-
+// Adds a new firework bonus to the board
 void add_new_fireworkbonus(Board* board);
-
+// Adds a new anaconda bonus to the board
 void add_new_anacondabonus(Board* board);
-
+// Adds a snake to the board, specifically playerB snakes if it is NULL
 void add_snake(Board* board);
-
+// Allocates memory and sets variables of a snake's fireblock 
 void add_fireblock_tosnake(PointList* snakePtr);
+

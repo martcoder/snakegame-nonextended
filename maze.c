@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "backend.h"
 
+// Creates a list of PointList items each with coordinates of a maze block
+// returns the first PointList of the complete maze
 PointList* create_maze(int xmax, int ymax){
   
   // Left wall of maze

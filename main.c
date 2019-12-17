@@ -5,8 +5,9 @@
 #include "splash.h"
 #include <ncurses.h>
 
+// initialise colour pairs, then called frontend.c functions to draw the blocks
 void draw(Board* board){
-	start_color();
+    start_color();
     // from https://stackoverflow.com/questions/10487166/ncurses-multi-colors-on-screenv 
     init_pair(11, COLOR_RED, COLOR_BLACK);
     init_pair(1, COLOR_BLACK, COLOR_RED);
@@ -28,7 +29,7 @@ void draw(Board* board){
     if(board->snake)
       showScores(board->snake,board->xmax,board->ymax);
     
-    if(board->snakeB) 
+    if(board->snakeB) // board->snakeB NULL to begin with, so need this check 
         showScores(board->snakeB,board->xmax,board->ymax); 
 
     // draw snake
@@ -37,7 +38,7 @@ void draw(Board* board){
 
     // draw snakeB
     attron(COLOR_PAIR(22));
-    if(board->snakeB){
+    if(board->snakeB){// board->snakeB NULL to begin with, so need this check 
       display_points(board,board->snakeB, ACS_BLOCK,2); 
     }
     
@@ -74,7 +75,7 @@ void draw(Board* board){
             display_points(board,board->snake->fireBlocks, 'o',8);
             // display_points(board,board->snake->fireBlocks, 230); // for extended symbols 
     }
-    if(board->snakeB){
+    if(board->snakeB){// board->snakeB NULL to begin with, so need this check 
       if(board->snakeB->fireBlocks){
           if(board->snakeB->fireBlocks->beingFired == 1)
             display_points(board,board->snakeB->fireBlocks, 'o',8);
@@ -102,7 +103,7 @@ void draw(Board* board){
             //board->snake->fireworksBeingFired = 0;
             // display_points(board,board->snake->fireBlocks, 230); // for extended symbols 
     }
-    if(board->snakeB){
+    if(board->snakeB){// board->snakeB NULL to begin with, so need this check 
       if(board->snakeB->fireworksBeingFired == 1){
 
             display_points(board,board->snakeB->fireworkA, '*',22);
@@ -125,13 +126,13 @@ void draw(Board* board){
 // function to call backend.c move_fireblocks which moves travelling fireblock to next position
 void moveFireblocks(Board* board){
 
-  	if(board->snake->fireBlocks){
-	  if(board->snake->fireBlocks->beingFired == 1)
+    if(board->snake->fireBlocks){
+      if(board->snake->fireBlocks->beingFired == 1)
         move_fireblocks(board,board->snake);
     }
     
-    if(board->snakeB){
-	  if(board->snakeB->fireBlocks){
+    if(board->snakeB){// board->snakeB NULL to begin with, so need this check 
+      if(board->snakeB->fireBlocks){
         if(board->snakeB->fireBlocks->beingFired == 1)
           move_fireblocks(board,board->snakeB);
       }
@@ -140,9 +141,9 @@ void moveFireblocks(Board* board){
 
 // function to call backend.c move_fireworks which moves fireworks to next position
 void moveFireworks(Board* board){
-	if(board->snake->fireworksBeingFired == 1)
+   if(board->snake->fireworksBeingFired == 1)
 	  move_fireworks(board, board->snake);
-	if(board->snakeB){ 
+   if(board->snakeB){ // board->snakeB NULL to begin with, so need this check 
       if(board->snakeB->fireworksBeingFired == 1)
 	    move_fireworks(board,board->snakeB);	
 	}
@@ -161,11 +162,13 @@ int main() {
   //get current text screen size
   getmaxyx(stdscr, ymax, xmax); //it is a macro, no & needed in ymax, xmax
 
+  // Start of game splash screen
   splashScreen(xmax,ymax);
 
   //start snake moving to the right
   enum Direction dir_playerA = RIGHT;
   enum Direction dir_playerB = DOWN;
+  // create pointers to directions for player A and player B, to pass into get_next_move function
   enum Direction * dir_playerAptr = &dir_playerA; 
   enum Direction * dir_playerBptr = &dir_playerB; 
 
@@ -213,24 +216,19 @@ int main() {
     // move fireworks blocks
     moveFireworks(board);
 
+    // pvpactivator pointer gets passed to the move_snake function so it can be updated and checked later here in main to do pvp splash screen
     int pvpactivator = 1;
     int * pvp = &pvpactivator;
     
-    int pAscore = 0;
-    int * pAscorePtr = &pAscore;
-    
-    int pBscore = 0;
-    int * pBscorePtr = &pBscore;
-    
-    // Read in the keyboard to see which direction is being pressed or if special key is pressed, reads for playerA and playerB
-    get_next_move(*dir_playerAptr, *dir_playerBptr, dir_playerAptr, dir_playerBptr,board->snake,board->snakeB ? board->snakeB : NULL); //get next move direction
-	//update snake direction
+    // Read in the keyboard to see which direction is being pressed or if special key is pressed, reads for playerA and playerB for next move direction
+    get_next_move(*dir_playerAptr, *dir_playerBptr, dir_playerAptr, dir_playerBptr,board->snake,board->snakeB ? board->snakeB : NULL); 
+
+    //update snake direction
     enum Status status = move_snake(board, *dir_playerAptr,board->snake, pvp);
     
     if (status == FAILURE) break; //finish game if move not okay, e.g. snake ate itself
 
-    if(board->snakeB){
-      
+    if(board->snakeB){ // board->snakeB NULL to begin with, so need this check  
        status = move_snake(board, *dir_playerBptr,board->snakeB, pvp); // move player B snake
       if (status == FAILURE) break; //finish game if move not okay e.g. snake hit itself
     }
@@ -246,13 +244,14 @@ int main() {
         //get current text screen size
         getmaxyx(stdscr, ymax, xmax); //it is a macro, no & needed in ymax, xmax
 
+        // show pvp splash screen 
         splash2player(xmax,ymax);
         
         *pvp = 1; // deactivate again
 	}
 	
 	// player B : If anaconda in play is about to expire, respawn anaconda bonus in centre of the maze
-	if(board->snakeB){
+	if(board->snakeB){// board->snakeB NULL to begin with, so need this check 
 	  if(board->snakeB->anacondaCountdown == ANACONDA_TIMEOUT)
 	    splashAnaconda(board->xmax,board->ymax);
 	  if(	board->snakeB->anacondaCountdown > 1 &&  board->snakeB->anacondaCountdown < 3 ){

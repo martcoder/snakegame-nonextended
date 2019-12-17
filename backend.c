@@ -33,14 +33,15 @@ bool remove_from_list(PointList* elt, PointList** list) {
   }
   return false;
 }
+
 // change existing item's coordinates to different values, e.g. to simulate an item being eaten and respawning somewhere else
 bool change_coords(PointList* item, Board* board) {
 	PointList* newcell;
 	int foundNewLocation = 0;
   if(item){
 
-	while(foundNewLocation == 0){
-	  newcell = create_cell(rand() % board->xmax, rand() % board->ymax);
+    while(foundNewLocation == 0){
+      newcell = create_cell(rand() % board->xmax, rand() % board->ymax);
       if( list_contains(newcell, board->maze) 
       || list_contains(newcell, board->pvpbonus) 
       || list_contains(newcell, board->foods ) 
@@ -53,10 +54,10 @@ bool change_coords(PointList* item, Board* board) {
         foundNewLocation = 0;
       else
         foundNewLocation = 1;
-	}
-	item->x = newcell->x;
-	item->y = newcell->y;
-	return true;
+    } // end of while
+    item->x = newcell->x;
+    item->y = newcell->y;
+    return true;
   }
   return false;
 }
@@ -79,6 +80,7 @@ void update_item_coords_in_list_if_in_anaconda(PointList* beginning, PointList* 
 	listLocal = list; // reset pointer
 	anacondaPoint->x = anacondaPoint->x + 1;
 	anacondaPoint->y = anacondaPoint->y + 1;
+
 	// go through list and see if item in list matches an anaconda location
 	while(listLocal){
 	  // if this element in the list equals an anaconda point, change coords of element
@@ -89,33 +91,37 @@ void update_item_coords_in_list_if_in_anaconda(PointList* beginning, PointList* 
 		
 	listLocal = list; // reset pointer
 	anacondaPoint->x = anacondaPoint->x + 1;
-    anacondaPoint->y = anacondaPoint->y + 1;
+        anacondaPoint->y = anacondaPoint->y + 1;
+
 	while(listLocal){
 	  // if this element in the list equals an anaconda point, change coords of element
 	  if(anacondaPoint->x == listLocal->x && anacondaPoint->y == listLocal->y)
 	    change_coords(listLocal,board); 
 	  listLocal = listLocal->next;
-   }
+        }
 	  	
-   listLocal = list; // reset pointer
-   anacondaPoint->x = anacondaPoint->x + -3;
-   anacondaPoint->y = anacondaPoint->y + -3;
-   while(listLocal){
-	// if this element in the list equals an anaconda point, change coords of element
-	if(anacondaPoint->x == listLocal->x && anacondaPoint->y == listLocal->y)
-	  change_coords(listLocal,board); 
-	listLocal = listLocal->next;
-  }
+        listLocal = list; // reset pointer
+        anacondaPoint->x = anacondaPoint->x + -3;
+        anacondaPoint->y = anacondaPoint->y + -3;
+
+        while(listLocal){
+	  // if this element in the list equals an anaconda point, change coords of element
+	  if(anacondaPoint->x == listLocal->x && anacondaPoint->y == listLocal->y)
+	    change_coords(listLocal,board); 
+
+	  listLocal = listLocal->next; // move to next point in list
+        }
 	  	
-  listLocal = list; // reset pointer
-  anacondaPoint->x = anacondaPoint->x + -1;
-  anacondaPoint->y = anacondaPoint->y + -1;
-  while(listLocal){
-	// if this element in the list equals an anaconda point, change coords of element
-	if(anacondaPoint->x == listLocal->x && anacondaPoint->y == listLocal->y)
-	  change_coords(listLocal,board); 
-	listLocal = listLocal->next;
-  }
+        listLocal = list; // reset pointer
+        anacondaPoint->x = anacondaPoint->x + -1;
+        anacondaPoint->y = anacondaPoint->y + -1;
+
+        while(listLocal){
+	  // if this element in the list equals an anaconda point, change coords of element
+	  if(anacondaPoint->x == listLocal->x && anacondaPoint->y == listLocal->y)
+	    change_coords(listLocal,board); 
+	  listLocal = listLocal->next;
+        }
 }
 // check all items in the list to see if they match beginning, if so change the coords of that item, e.g. that item will be eaten
 void update_item_coords_in_list(PointList* beginning, PointList* list, Board* board){
@@ -124,7 +130,7 @@ void update_item_coords_in_list(PointList* beginning, PointList* list, Board* bo
 	PointList* point = create_cell(beginning->x,beginning->y);
 	
 	// go through list and see if item in list matches the beginning location
-    while(listLocal){
+        while(listLocal){
 	  // if this element in the list equals the point, change coords of element
 	  if(point->x == listLocal->x && point->y == listLocal->y) // location match
 		change_coords(listLocal,board); 
@@ -146,7 +152,6 @@ void update_item_coords_in_list_if_in_fireblock(PointList* beginning, PointList*
 	  listLocal = listLocal->next;
 	}
 	
-	//mvaddch(snake->y + 1, snake->x + 1, 230);
 	listLocal = list; // reset pointer
 	fireblockPoint->x = beginning->x + 1;
 	fireblockPoint->y = beginning->y + 1;
@@ -157,68 +162,66 @@ void update_item_coords_in_list_if_in_fireblock(PointList* beginning, PointList*
 	    change_coords(listLocal,board); 
 	  listLocal = listLocal->next;
 	}
-		
-		//mvaddch(snake->y, snake->x + 1, 230);
+
 	listLocal = list; // reset pointer
 	fireblockPoint->x = beginning->x + 1;
-    fireblockPoint->y = beginning->y;
+        fireblockPoint->y = beginning->y;
 	while(listLocal){
 	  // if this element in the list equals an anaconda point, change coords of element
 	  if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y)
 	    change_coords(listLocal,board); 
 	  listLocal = listLocal->next;
-   }
+        }
 	  	
-	  	//mvaddch(snake->y, snake->x - 1, 230);
-   listLocal = list; // reset pointer
-   fireblockPoint->x = beginning->x - 1;
-   fireblockPoint->y = beginning->y;
-   while(listLocal){
-	// if this element in the list equals an anaconda point, change coords of element
-	if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y)
-	  change_coords(listLocal,board); 
-	listLocal = listLocal->next;
-  }
+
+        listLocal = list; // reset pointer
+        fireblockPoint->x = beginning->x - 1;
+        fireblockPoint->y = beginning->y;
+        while(listLocal){
+	  // if this element in the list equals an anaconda point, change coords of element
+	  if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y)
+	    change_coords(listLocal,board); 
+	  listLocal = listLocal->next;
+        }
 	  	
-	  	 //mvaddch(snake->y + 1, snake->x, 230);
-  listLocal = list; // reset pointer
-  fireblockPoint->x = beginning->x ;
-  fireblockPoint->y = beginning->y + 1;
-  while(listLocal){
-	// if this element in the list equals an anaconda point, change coords of element
-	if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y)
-	  change_coords(listLocal,board); 
-	listLocal = listLocal->next;
-  }
-  
-  //mvaddch(snake->y - 1, snake->x, 230);
-  listLocal = list; // reset pointer
-  fireblockPoint->x = beginning->x ;
-  fireblockPoint->y = beginning->y - 1;
-  while(listLocal){
-	// if this element in the list equals an anaconda point, change coords of element
-	if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y)
-	  change_coords(listLocal,board); 
-	listLocal = listLocal->next;
-  }
+
+        listLocal = list; // reset pointer
+        fireblockPoint->x = beginning->x ;
+        fireblockPoint->y = beginning->y + 1;
+        while(listLocal){
+	  // if this element in the list equals an anaconda point, change coords of element
+	  if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y)
+	    change_coords(listLocal,board); 
+	  listLocal = listLocal->next;
+        }
   
   
+        listLocal = list; // reset pointer
+        fireblockPoint->x = beginning->x ;
+        fireblockPoint->y = beginning->y - 1;
+        while(listLocal){
+	  // if this element in the list equals an anaconda point, change coords of element
+	  if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y)
+	    change_coords(listLocal,board); 
+	  listLocal = listLocal->next;
+        }
   
-  //mvaddch(snake->y -1, snake->x - 1, 230);
-  listLocal = list; // reset pointer
-  fireblockPoint->x = beginning->x - 1;
-  fireblockPoint->y = beginning->y - 1;
-  while(listLocal){
-	// if this element in the list equals an anaconda point, change coords of element
-	if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y)
-	  change_coords(listLocal,board); 
-	listLocal = listLocal->next;
-  }
+
+        listLocal = list; // reset pointer
+        fireblockPoint->x = beginning->x - 1;
+        fireblockPoint->y = beginning->y - 1;
+        while(listLocal){
+	  // if this element in the list equals an anaconda point, change coords of element
+	  if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y)
+	    change_coords(listLocal,board); 
+	  listLocal = listLocal->next;
+        }
   
 }
 
+// Update fireblock position based on direction of fireblock
 void newFireBlockPosition(PointList* fireblock, Board* board){
-	// Update location based on direction of fireblock
+	
     if(fireblock->dir == UP)
 	  fireblock->y = fireblock->y - 1;
 	if(fireblock->dir == DOWN)
@@ -240,7 +243,7 @@ void newFireBlockPosition(PointList* fireblock, Board* board){
 	*/
 }
 
-// This function moves each fireblock in its starting direction
+// This function moves each fireblock in its starting direction, with checks for if being fired, if eats a food, if reaches edge of board
 void move_fireblocks(Board* board, PointList* snakePtr){
 	
 	if(snakePtr->fireBlocks->beingFired == 1){ // if fireblock being fired, go ahead and move it
@@ -266,9 +269,6 @@ void move_fireblocks(Board* board, PointList* snakePtr){
 			snakePtr->justScored = 4;
 			//remove_from_list(fires, &(board->foods));
 			update_item_coords_in_list_if_in_fireblock(fires,board->foods,board);
-	        //add a new food at a random location
-            //add_new_food(board);
-            
 		}
 
 
@@ -276,17 +276,18 @@ void move_fireblocks(Board* board, PointList* snakePtr){
 		/*list_contains_snake_then_break(fires, board->snake);
 		if(board->snakeB)
      		  list_contains_snake_then_break(fires, board->snakeB);
-        */
+                */
 
 		// Extinguish fireblock if edge of terminal is reached
 		if( (fires->x > board->xmax) || (fires->x < 0) || (fires->y > board->ymax) || (fires->y < 0) ){
 		    fires->beingFired = 0; //deactivate
-            fires->independentOfSnake = 1; //deactivate
-            fires->extinguishGraphics = 1;
+                    fires->independentOfSnake = 1; //deactivate
+                    //fires->extinguishGraphics = 1;
 		}
 	}	
 }
 
+// Set all of a snake's fireworks coordinates to the x and y coordinate passed in as parameters, and activate firework->beingFired
 void initialiseFireworkCoordsAndSetBeingFired(PointList* snakePtr, int x, int y){
 	    snakePtr->fireworkA->x = x;
 	    snakePtr->fireworkA->y = y;	
@@ -317,15 +318,19 @@ void initialiseFireworkCoordsAndSetBeingFired(PointList* snakePtr, int x, int y)
 	    snakePtr->fireworkI->beingFired = 1;
 }
 
+// Move each of a snake's fireworks to their next position, 
+// deactivate firework if off the board
+// also check if only 1 remaining or if resplode countdown timed out, then choose a random one of the remaining and re-explode fireworks from its location 
 void move_fireworks(Board* board, PointList* snakePtr){
 	
 	int allFinished = 1;
 	int countFinished = 0;
-	if(snakePtr->fireworkA->beingFired == 1){
+
+	if(snakePtr->fireworkA->beingFired == 1){ // Left travelling firework is activated
 		
 	  //Left
-	  snakePtr->fireworkA->x = snakePtr->fireworkA->x - 1;
-	  
+	  snakePtr->fireworkA->x = snakePtr->fireworkA->x - 1; // move to next position
+	  // Firework consumes food it runs into
 	  if(list_contains(snakePtr->fireworkA,board->foods)){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
@@ -340,12 +345,13 @@ void move_fireworks(Board* board, PointList* snakePtr){
 	    allFinished = 0;
 	}
 	else
-	  countFinished++;
+	  countFinished++; // Keep a count of firework which has been deactivated, e.g. is off the board
 	  
-	if(snakePtr->fireworkB->beingFired == 1){
+	if(snakePtr->fireworkB->beingFired == 1){ // Right travelling firework is activated
 		
 	  //Right
 	  snakePtr->fireworkB->x = snakePtr->fireworkB->x + 1;
+// Firework consumes food it runs into
 	  if(list_contains(snakePtr->fireworkB,board->foods)){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
@@ -365,7 +371,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 	  countFinished++;
 	  
 	  
-	if(snakePtr->fireworkC->beingFired == 1){
+	if(snakePtr->fireworkC->beingFired == 1){ // Up travelling firework is activated
 		
 	  // Up
 	  snakePtr->fireworkC->y = snakePtr->fireworkC->y + 1;
@@ -388,7 +394,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 	  countFinished++;
 	  
 	  
-	if(snakePtr->fireworkD->beingFired == 1){
+	if(snakePtr->fireworkD->beingFired == 1){// Down travelling firework is activated
 		
 		//Down
 	  snakePtr->fireworkD->y = snakePtr->fireworkD->y - 1;
@@ -410,7 +416,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 	  countFinished++;
 	  
 	  
-	if(snakePtr->fireworkE->beingFired == 1){
+	if(snakePtr->fireworkE->beingFired == 1){// Up and Left travelling firework is activated
 		// Up and Left
 	  snakePtr->fireworkE->x = snakePtr->fireworkE->x - 1;
 	  snakePtr->fireworkE->y = snakePtr->fireworkE->y - 1;
@@ -433,7 +439,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
       countFinished++;
 	  
 	  
-	if(snakePtr->fireworkF->beingFired == 1){
+	if(snakePtr->fireworkF->beingFired == 1){// Up and Right travelling firework is activated
 		
 	  // UP and Right
 	  snakePtr->fireworkF->x = snakePtr->fireworkF->x + 1;
@@ -456,7 +462,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 	else
 	  countFinished++;
 	  
-	if(snakePtr->fireworkG->beingFired == 1){
+	if(snakePtr->fireworkG->beingFired == 1){// Down and Left travelling firework is activated
 		
 		// Down and Left
 	  snakePtr->fireworkG->x = snakePtr->fireworkG->x - 1;
@@ -479,7 +485,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 	else
 	  countFinished++;
 	  
-	if(snakePtr->fireworkG->beingFired == 1){
+	if(snakePtr->fireworkG->beingFired == 1){// Down and Right travelling firework is activated
 		
 		// Down and Right
 	  snakePtr->fireworkH->x = snakePtr->fireworkH->x + 1;
@@ -502,12 +508,12 @@ void move_fireworks(Board* board, PointList* snakePtr){
 	  countFinished++;
 	  
 	
-	// If only 1 remaining or replode countdown almost timed out, then do the classic firework thing of exploding a second time....
+	// If only 1 remaining or replode countdown almost timed out, choose at random a remaing firework and  do the firework thing of exploding again...
 	if(countFinished == 7 || snakePtr->fireworksReplodeCountdown == 1){
 		int which = rand() % 8;
 		if(which == 0)
 		  which = 1;
-		// The if statements should find the single remaining firework, and also check that it's not really close to the board edge, this additional constraint also means it won't continue forever...
+		// The if statements should find a remaining firework, and also check that it's not really close to the board edge
 		if(which == 1 && snakePtr->fireworkA->beingFired == 1 && ( snakePtr->fireworkA->x > 2 && snakePtr->fireworkA->x < board->xmax - 2 && snakePtr->fireworkA->y > 2 && snakePtr->fireworkA->y < board->ymax - 2 ) )
 		  initialiseFireworkCoordsAndSetBeingFired(snakePtr, snakePtr->fireworkA->x, snakePtr->fireworkA->y); // Start from the current coordinates of the last firework
 		if(which == 2 && snakePtr->fireworkB->beingFired == 1 && ( snakePtr->fireworkB->x > 2 && snakePtr->fireworkB->x < board->xmax - 2 && snakePtr->fireworkB->y > 2 && snakePtr->fireworkB->y < board->ymax - 2 ))
@@ -528,15 +534,10 @@ void move_fireworks(Board* board, PointList* snakePtr){
 		allFinished = 0;
 		snakePtr->fireworksReplodeCountdown = RESPLODE_TIMEOUT / 3;
     }
-    /*else{
-      char strB[12];
-		  sprintf(strB, "%d", countFinished);
-		  mvprintw(3,  3, strB);
-      
-    }*/
-	if(allFinished == 1 || snakePtr->fireworksTimeout == 0){
+
+    if(allFinished == 1 || snakePtr->fireworksTimeout == 0){ // if all fireworks have reached edge of board or overall fireworks timeout reached
 	  snakePtr->fireworksBeingFired = 0; // deactive snake fireworks
-	  change_coords(board->fireworkBonus,board);  
+	  change_coords(board->fireworkBonus,board);  // respawn fireworks bonus in a new random location 
     }
 }
 
@@ -646,7 +647,7 @@ enum Status move_snake(Board* board, enum Direction dir, PointList* snake, int *
     snakePtr->score = snakePtr->score + 1;
     snakePtr->justScored = 2; // activate justScored variable of snake, used to flare the score
     
-	shift_snake(snakePtr,beginning,1); // domino x,y coords through the entire snake and add a new tail
+    shift_snake(snakePtr,beginning,1); // domino x,y coords through the entire snake and add a new tail
 
     return SUCCESS;
   }
@@ -688,6 +689,7 @@ bool list_contains_anaconda(PointList* beginning, PointList* list, PointList* sn
 	return false;
 }
 
+// This function is not being used yet, but is meant to be for if a snake gets hit by a fireblock, to reduce its score and remove some parts of it
 bool list_contains_snake_then_break(PointList* fires, PointList* snakePtr){
 	
 
@@ -759,6 +761,9 @@ bool list_contains_fireblock(PointList* beginning, PointList* list){
 	return false;
 }
 
+// Domino each snake PointList coordinate to the next point down the length of the entire snake, and put next move coordinates into snake head
+// It is to move each point of the snake along, to make movement of the snake happen
+// parameter addTail can be used to also signal that a new tail should be added, e.g. if a food has been eaten
 void shift_snake(PointList* snakePtr, PointList* beginning, int addTail){
   	struct PointList* position = (struct PointList*) calloc(1,sizeof(struct PointList));
   struct PointList* storerPrev = (struct PointList *) calloc(1,sizeof(struct PointList)); 
@@ -815,7 +820,7 @@ bool is_same_place(PointList* cell1, PointList* cell2) {
 
 //Creates and returns a new snake point (the new snake's head position)
 //in the corresponding move direction
-//If the snake hits the screen limits, it returns NULL instead
+//If the snake hits the screen limits it wraps around to opposite side
 PointList* next_move(Board* board, enum Direction dir, PointList* snake) {
   
   int new_x = snake->x;
@@ -918,7 +923,7 @@ void add_new_firebonus(Board* board){
 	   while(!ok){
 		  newcell->x = rand() % board->xmax;
 		  newcell->y = rand() % board->ymax;
-		   
+		  // thorough checking of it the new location is within any of these game items, if so try a different location
 		  if( list_contains(newcell, board->pvpbonus) 
 		  || list_contains(newcell, board->fireworkBonus)
 		  || list_contains(newcell, board->maze)
@@ -947,6 +952,7 @@ void add_new_firebonus(Board* board){
 	   bool ok = false;
 	   while(!ok){
 	  new_firebonus = create_random_cell(board->xmax, board->ymax);
+          // thorough checking of if the new location is within any of these game items, if so try a different location
 	  if( list_contains(new_firebonus, board->pvpbonus) 
 	  || list_contains(new_firebonus, board->fireworkBonus)
 	  || list_contains(new_firebonus, board->maze)
@@ -1022,9 +1028,9 @@ PointList* create_snake() {
   a->fireworksTimeout = 0; // inactive initially 
   a->beingFired = 0; // set to false initially
   a->anacondaCountdown = 0; // set to 0 initially
-  a->fireworksReplodeCountdown = 0;
-  a->fireworkA = (PointList*) malloc(sizeof(PointList));
-  a->fireworkA->fwBeingFired = 0;
+  a->fireworksReplodeCountdown = 0; // set to 0 initially
+  a->fireworkA = (PointList*) malloc(sizeof(PointList)); // Allocate the firework memory
+  a->fireworkA->fwBeingFired = 0; // initialise to inactive
   a->fireworkB = (PointList*) malloc(sizeof(PointList));
   a->fireworkB->fwBeingFired = 0;
   a->fireworkC = (PointList*) malloc(sizeof(PointList));
@@ -1046,17 +1052,20 @@ PointList* create_snake() {
   return a; //return head element address (start of list)
 }
 
+// Adds a snake to the board consisting of two PointList items
 void add_snake(Board* board){
-  if(board->snakeB == NULL){
+  if(board->snakeB == NULL){ // if playerB snake is NULL, do that one
     board->snakeB = create_snake();
     board->snakeB->id = 'b';
     board->snakeB->justScored = 0;
   }
 }
 
+// Initialises a snake's fireblock with memory, and sets parameters
 void add_fireblock_tosnake(PointList* snakePtr){
 	
 	struct PointList * new_fireblock = calloc( 1,sizeof(PointList) );
+        // set fireblock coordinates
 	new_fireblock->x = 0;
 	new_fireblock->y = 0;
 	new_fireblock->beingFired = 0; // inactive initially 
@@ -1066,12 +1075,13 @@ void add_fireblock_tosnake(PointList* snakePtr){
 	snakePtr->fireBlocks = new_fireblock; // assign fireblock to the snake in question
 }
 
+// Add anaconda bonus to board
 void add_new_anacondabonus(Board* board){
-	PointList* new_bonus;
-   bool ok = false;
-   while(!ok){
+  PointList* new_bonus;
+  bool ok = false;
+  while(!ok){
   new_bonus = create_cell(board->xmax /2, board->ymax / 2 + 3);
-  
+  // thorough checking of if the new location is within any of these game items, if so try a different location
   if(list_contains(new_bonus, board->pvpbonus) 
   || list_contains(new_bonus, board->fireworkBonus)
   || list_contains(new_bonus, board->maze)
@@ -1090,12 +1100,13 @@ void add_new_anacondabonus(Board* board){
   board->anacondaBonus = new_bonus;
 }
 
+// Add the fireworks bonus to the board
 void add_new_fireworkbonus(Board* board){
 	PointList* new_bonus;
    bool ok = false;
    while(!ok){
   new_bonus = create_random_cell(board->xmax, board->ymax);
-  
+  // thorough checking of if the new location is within any of these game items, if so try a different location
   if(list_contains(new_bonus, board->pvpbonus) 
   || list_contains(new_bonus, board->maze)
   || list_contains(new_bonus, board->foods ) 

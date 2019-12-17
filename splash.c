@@ -1,5 +1,6 @@
 #include <ncurses.h>
 
+// start of game splash screen
 void splashScreen(int xmax, int ymax){
 	
   start_color();
@@ -9,7 +10,7 @@ void splashScreen(int xmax, int ymax){
     
   int x = 0;
   int y = 0;
-  // fill in screen
+  // fill in screen with background colour
   for(x = 0; x < xmax; x++){
     for(y = 0; y < ymax; y++){
       mvaddch(y, x, ACS_BLOCK);
@@ -292,7 +293,7 @@ mvaddch(14,65, ACS_BLOCK);
 mvaddch(14,66, ACS_BLOCK);
 mvaddch(14,67, ACS_BLOCK);
 
-
+  // wait for enter key to be pressed
   int enter = 1;
   while(enter){
     int ch = getch();
@@ -302,9 +303,10 @@ mvaddch(14,67, ACS_BLOCK);
 
   }
   
-  timeout(100);// game speed
+  timeout(100);// return to game speed
 }
 
+// show pvp splash screen
 void splash2player(int xmax, int ymax){
 	
 	start_color();
@@ -445,6 +447,7 @@ mvaddch(8,42, ACS_BLOCK);
   timeout(100);// game speed
 }
 
+// show anaconda splash screen
 void splashAnaconda(int xmax, int ymax){
 	
 	timeout(8000); //do not keep waiting for keypress longer than this
