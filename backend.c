@@ -144,7 +144,7 @@ void update_item_coords_in_list_if_in_fireblock(PointList* beginning, PointList*
 	PointList* listLocal = list; // e.g. food list, firebonus list, etc
 	PointList* fireblockPoint = create_cell(beginning->x,beginning->y);
 	
-	// go through list and see if item in list matches an anaconda location
+	// go through list and see if item in list matches a fireblock location
 	while(listLocal){
 	  // if this element in the list equals an anaconda point, change coords of element
 	  if(fireblockPoint->x == listLocal->x && fireblockPoint->y == listLocal->y) // location match
@@ -332,7 +332,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
 		  // update coords of foods which got consumed
-		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkA,board->foods,board);
+		  update_item_coords_in_list(snakePtr->fireworkA,board->foods,board);
 	  }
 	  // If firework is off the board, deactivate
 	  if(snakePtr->fireworkA->x < -1 || snakePtr->fireworkA->x > board->xmax|| snakePtr->fireworkA->y < -1 || snakePtr->fireworkA->y > board->ymax)
@@ -353,7 +353,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
 		  // update coords of foods which got consumed
-		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkB,board->foods,board);
+		  update_item_coords_in_list(snakePtr->fireworkB,board->foods,board);
 	  }
 	  
 	  // If firework is off the board, deactivate
@@ -376,7 +376,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
 		  // update coords of foods which got consumed
-		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkC,board->foods,board);
+		  update_item_coords_in_list(snakePtr->fireworkC,board->foods,board);
 	  }
 	  
 	  // If firework is off the board, deactivate
@@ -399,7 +399,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
 		  // update coords of foods which got consumed
-		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkD,board->foods,board);
+		  update_item_coords_in_list(snakePtr->fireworkD,board->foods,board);
 	  }
 	  
 	  // If firework is off the board, deactivate
@@ -421,7 +421,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
 		  // update coords of foods which got consumed
-		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkE,board->foods,board);
+		  update_item_coords_in_list(snakePtr->fireworkE,board->foods,board);
 	  }
 	  
 	  
@@ -445,7 +445,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
 		  // update coords of foods which got consumed
-		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkF,board->foods,board);
+		  update_item_coords_in_list(snakePtr->fireworkF,board->foods,board);
 	  }
 	  
 	  
@@ -468,7 +468,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
 		  // update coords of foods which got consumed
-		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkG,board->foods,board);
+		  update_item_coords_in_list(snakePtr->fireworkG,board->foods,board);
 	  }
 	  
 	  // If firework is off the board, deactivate
@@ -491,7 +491,7 @@ void move_fireworks(Board* board, PointList* snakePtr){
 		  snakePtr->score = snakePtr->score + 1; 
 		  snakePtr->justScored = 4;
 		  // update coords of foods which got consumed
-		  update_item_coords_in_list_if_in_fireblock(snakePtr->fireworkH,board->foods,board);
+		  update_item_coords_in_list(snakePtr->fireworkH,board->foods,board);
 	  }
 	  
 	  // If firework is off the board, deactivate
