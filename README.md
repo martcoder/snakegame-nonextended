@@ -12,8 +12,11 @@ TO COMPILE:
 TO RUN:
   ./snakegame
 
-To play you use the arrow keys for direction, and the Enter key for special. 
+TO PLAY:
+PlayerA: To play you use the arrow keys for direction, and the Enter key for special. 
+PlayerB: use WASD and the Spacebar for special, and ask playerA to eat the pvp bonus! 
 
+FEATURES:
 Features added by myself include:
 
 - Showing the score at middle top of screen
