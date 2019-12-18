@@ -862,6 +862,8 @@ void add_new_food(Board* board) {
    bool ok = false;
    while(!ok){
 	new_food = create_random_cell(board->xmax, board->ymax);
+	//calls to list_contains_fireblock have parameters in reverse compared to when calling for a newly created fireblock to see if fireblock should consume
+	  // similar for list_contains_anaconda
 	if(list_contains(new_food, board->foods) 
 	|| list_contains(new_food, board->maze)
 	|| list_contains(new_food, board->pvpbonus) 
@@ -891,6 +893,8 @@ void add_new_bonus(Board* board){
 	   bool ok = false;
 	   while(!ok){
 	  new_pvpbonus = create_random_cell(board->xmax, board->ymax);
+	  //calls to list_contains_fireblock have parameters in reverse compared to when calling for a newly created fireblock to see if fireblock should consume
+	  // similar for list_contains_anaconda
 	  if( list_contains(new_pvpbonus, board->pvpbonus) 
 	  || list_contains(new_pvpbonus, board->fireworkBonus)
 	  || list_contains(new_pvpbonus, board->maze)
@@ -922,6 +926,8 @@ void add_new_firebonus(Board* board){
 	   while(!ok){
 		  newcell->x = rand() % board->xmax;
 		  newcell->y = rand() % board->ymax;
+		  //calls to list_contains_fireblock have parameters in reverse compared to when calling for a newly created fireblock to see if fireblock should consume
+	  // similar for list_contains_anaconda
 		  // thorough checking of it the new location is within any of these game items, if so try a different location
 		  if( list_contains(newcell, board->pvpbonus) 
 		  || list_contains(newcell, board->fireworkBonus)
@@ -948,6 +954,7 @@ void add_new_firebonus(Board* board){
 	  // for cells allocated in non-valid positions, they were just ignored (mem leak!)
 	  
 	  //calls to list_contains_fireblock have parameters in reverse compared to when calling for a newly created fireblock to see if fireblock should consume
+	  // similar for list_contains_anaconda
 	   bool ok = false;
 	   while(!ok){
 	  new_firebonus = create_random_cell(board->xmax, board->ymax);
@@ -1083,6 +1090,8 @@ void add_new_anacondabonus(Board* board){
   bool ok = false;
   while(!ok){
   new_bonus = create_cell(board->xmax /2, board->ymax / 2 + 3);
+  //calls to list_contains_fireblock have parameters in reverse compared to when calling for a newly created fireblock to see if fireblock should consume
+  // similar for list_contains_anaconda
   // thorough checking of if the new location is within any of these game items, if so try a different location
   if(list_contains(new_bonus, board->pvpbonus) 
   || list_contains(new_bonus, board->fireworkBonus)
@@ -1109,6 +1118,8 @@ void add_new_fireworkbonus(Board* board){
    while(!ok){
   new_bonus = create_random_cell(board->xmax, board->ymax);
   // thorough checking of if the new location is within any of these game items, if so try a different location
+  //calls to list_contains_fireblock have parameters in reverse compared to when calling for a newly created fireblock to see if fireblock should consume
+  // similar for list_contains_anaconda
   if(list_contains(new_bonus, board->pvpbonus) 
   || list_contains(new_bonus, board->maze)
   || list_contains(new_bonus, board->foods ) 
