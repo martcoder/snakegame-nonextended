@@ -112,7 +112,7 @@ void showScores(PointList* thesnake, int xmax, int ymax){
 	if(thesnake){
 		if(thesnake->id == 'a'){ // if playerA use playerA colours
 			init_pair(6, COLOR_RED, COLOR_BLACK);
-			if(thesnake->justScored > 0){
+			if(thesnake->justScored > 0){ // if flaring has not timed out, show a solid colour over the score
 				init_pair(6, COLOR_RED, COLOR_RED);
 				thesnake->justScored = thesnake->justScored - 1; // decrement each time so it times out
 			}
@@ -128,7 +128,7 @@ void showScores(PointList* thesnake, int xmax, int ymax){
 		else if(thesnake->id == 'b'){ // if playerB use playerB colours
 		  init_pair(7, COLOR_GREEN, COLOR_BLACK);
 			
-		  if(thesnake->justScored > 0){
+		  if(thesnake->justScored > 0){// if flaring has not timed out, show a solid colour over the score
 		    init_pair(7, COLOR_GREEN, COLOR_GREEN);
 			thesnake->justScored = thesnake->justScored - 1; // decrement each time so it times out
 		  }

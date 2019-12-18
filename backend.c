@@ -1062,9 +1062,12 @@ void add_snake(Board* board){
 
 // Initialises a snake's fireblock with memory, and sets parameters
 void add_fireblock_tosnake(PointList* snakePtr){
-	
-	struct PointList * new_fireblock = calloc( 1,sizeof(PointList) );
-        // set fireblock coordinates
+	struct PointList * new_fireblock;
+	if(snakePtr->fireBlocks == NULL) // if snake fireblock not initislised yet, allocate memory
+    	new_fireblock = (PointList* ) calloc( 1,sizeof(PointList) );
+    else
+        new_fireblock = snakePtr->fireBlocks; // if snake fireblock initialised, use that
+    // set fireblock coordinates
 	new_fireblock->x = 0;
 	new_fireblock->y = 0;
 	new_fireblock->beingFired = 0; // inactive initially 
